@@ -1,3 +1,4 @@
+import autoit
 from selenium import webdriver 
 from selenium.webdriver.chrome.options import Options
 from time import sleep
@@ -50,8 +51,8 @@ class InstaBot:
         return names
 
     
-Bot = InstaBot(username,password)
-Bot.get_unfollowers()
+# Bot = InstaBot(username,password)
+# Bot.get_unfollowers()
 
 class InstaBotMobile:
 
@@ -73,11 +74,33 @@ class InstaBotMobile:
         sleep(2)
         self.browser.find_element_by_xpath("//button[contains(text(), 'Cancel')]").click()
         sleep(2)
+        self.browser.find_element_by_xpath('/html/body/div[1]/section/nav[2]/div/div/div[2]/div/div/div[5]').click()
     
-    def upload_photo(self):
-        self.browser.find_element_by_xpath('/html/body/div[1]/section/nav[2]/div/div/div[2]/div/div/div[3]/svg/path[1]').click()
-        # self.browser.find_elements_by_css_selector("#react-root > section > nav.NXc7H.f11OC > div > div > div.KGiwt > div > div > div.q02Nz._0TPg > svg").click()
+    def upload_photo(self,image_path,caption):
+        sleep(2)
+
+        self.browser.find_element_by_xpath('/html/body/div[1]/section/nav[2]/div/div/div[2]/div/div/div[3]').click()
+        sleep(2)
+        autoit.win_active("Open")
+        sleep(2)
+        autoit.control_send("Open","Edit1",image_path) 
+        sleep(2)
+        autoit.control_send("Open","Edit1","{ENTER}")
+
+        sleep(2)
+        self.browser.find_element_by_xpath("//button[contains(text(),'Next')]").click()
+        # self.browser.find_element_by_xpath('/html/body/div[1]/section/div[1]/header/div/div[2]').click()
+        sleep(2)
+        caption_field = self.browser.find_element_by_xpath("//textarea[@aria-label='Write a caption…']")
+        caption_field.send_keys(caption)
+        sleep(2)
+        self.browser.find_element_by_xpath("//button[contains(text(),'Share')]").click()
+
+        sleep(25)
 
 
-# myBot = InstaBotMobile('botpacker','password')
-# myBot.upload_photo()
+image_path =r"C:\Users\vorapolbig\Projects\istabot\aki.png"
+caption = r"Testing image"
+
+myBot = InstaBotMobile(username,password)
+myBot.upload_photo(image_path,caption)
